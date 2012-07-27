@@ -1,9 +1,7 @@
 package org.dbpedia2sql.outputs;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,11 +19,9 @@ import org.dbpedia2sql.util.URISimplifier;
  * An SQL writer which only writes to some trivial flat tables, not very optimized for efficient lookups 
  */
 public class AdvancedSQLWriter implements SubjectHandler{
-	public AdvancedSQLWriter() throws Exception {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/osm", "osm", "osm");
-
-
+	public AdvancedSQLWriter(Connection conn) throws Exception {
+		this.conn = conn;
+		
 		insertSubject = conn.prepareStatement("INSERT INTO dbpedia_subject (uri) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
 		insertSubjectWithName = conn.prepareStatement("INSERT INTO dbpedia_subject (uri, foafname) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
 		insertPredicate = conn.prepareStatement("INSERT INTO dbpedia_predicate (id, predicate) VALUES (?,?)");

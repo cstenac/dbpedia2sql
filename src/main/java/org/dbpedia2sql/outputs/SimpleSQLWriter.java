@@ -1,9 +1,7 @@
 package org.dbpedia2sql.outputs;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,10 +14,8 @@ import org.dbpedia2sql.util.URISimplifier;
  * An SQL writer which only writes to some trivial flat tables, not very optimized for efficient lookups 
  */
 public class SimpleSQLWriter implements SubjectHandler{
-	public SimpleSQLWriter() throws Exception {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/osm", "osm", "osm");
-
+	public SimpleSQLWriter(Connection conn) throws Exception {
+		this.conn = conn;
 
 		insertSubject = conn.prepareStatement("INSERT INTO dbpedia_subject (uri) VALUES(?)");
 		insertOnto = conn.prepareStatement("INSERT INTO dbpedia_ontology (subject, property, value) VALUES(?,?,?)");
