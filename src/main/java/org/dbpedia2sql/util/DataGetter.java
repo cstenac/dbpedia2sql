@@ -31,6 +31,13 @@ public class DataGetter {
 		}
 		return defaultValue;
 	}
+	public static int getInt(List<DataTriple> triples, String predicate, int defaultValue) {
+		for (DataTriple triple : triples) {
+			if (triple.getPredicate().equals(predicate)) return triple.getInt();
+		}
+		return defaultValue;
+	}
+	
 	public static String getWGS84PointWKT(List<DataTriple> triples) {
 		double zeLong = 0.0;
 		double zeLat = 0.0;
